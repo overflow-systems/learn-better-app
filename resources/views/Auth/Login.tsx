@@ -7,6 +7,7 @@ import { useState } from 'react';
 //? COMPONENTS
 import Container from '../../components/Container';
 import ActionButton from '../../components/ActionButton';
+import LabelInput from '../../components/LabelInput';
 
 //? ROUTES
 
@@ -16,30 +17,22 @@ export default function Home ({navigation}:any) {
 
   return (
     <Container>
-      <View style={styles.top}>
+      <View>
         <Image source={global.images.Logo.HorizontalWhite} style={styles.logo} />
-
         <Text style={styles.desc}>Entre com os dados da sua conta para continuar</Text>
       </View>
 
       <View style={styles.content}>
-
-        <View style={styles.label}>
-          <Text style={styles.label_desc}>Email <Text style={{color: global.colors.red}}>*</Text>:</Text>
+        <LabelInput text="Email" required={true}>
           <TextInput placeholder="example@email.com.br" onChangeText={(val:string) => setEmail(val)} />
-        </View>
+        </LabelInput>
 
-        <View style={styles.label}>
-          <Text style={styles.label_desc}>Senha <Text style={{color: global.colors.red}}>*</Text>:</Text>
-          <TextInput placeholder="***********" secureTextEntry={true} onChangeText={(val:string) => setPassword(val)} />
-
-          <TouchableOpacity style={styles.forgot}>
-            <Text>Esqueci minha senha</Text>
-          </TouchableOpacity>
-        </View>
+        <LabelInput text="Senha" required={true}>
+          <TextInput placeholder="***********" style={{flexShrink: 0}} secureTextEntry={true} onChangeText={(val:string) => setPassword(val)} />
+        </LabelInput>
       </View>
-
-      <View style={styles.bottom}>
+      
+      <View style={{marginVertical: 50}}>
         <ActionButton route="Home">Entrar</ActionButton>
 
         <TouchableOpacity style={styles.account}>
@@ -52,13 +45,12 @@ export default function Home ({navigation}:any) {
 
 const styles = StyleSheet.create({
   content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 50,
   },
 
   desc: {
-    marginTop: 20
+    marginTop: 20,
+    alignSelf: 'center'
   },
 
   top: {
@@ -69,17 +61,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 100,
-  },
-
-  label: {
-    width: '100%',
-    marginBottom: 40
-  },
-
-  label_desc: {
-    marginLeft: 28,
-    marginBottom: 5,
-    fontSize: 16
+    alignSelf: 'center'
   },
 
   forgot: {
@@ -88,13 +70,10 @@ const styles = StyleSheet.create({
     marginTop: 14
   },
 
-  bottom: {
-    marginBottom: 20
-  },
-
   account: {
     marginTop: 10
   },
+
   account_text: {
     textAlign: 'center'
   }

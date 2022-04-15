@@ -14,7 +14,7 @@ import './config/Defaults';
 export default function App() {
   let [fontsLoaded] = useFonts(Fonts);
 
-  if(!fontsLoaded) return ( <AppLoading /> )
+  if(!fontsLoaded) return <AppLoading />
 
-  return (<Routes />);
+  return <Routes />;
 }

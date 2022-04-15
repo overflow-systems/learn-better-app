@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import { global } from '../../globals/global';
 
-export default function ActionButton ({children}:any) {
+export default function ActionButton ({style, children}:any) {
   return (
-    <TouchableOpacity onPress={() => {}} style={styles.button}>
+    <TouchableOpacity onPress={() => {}} style={[styles.button, style]}>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>
   );

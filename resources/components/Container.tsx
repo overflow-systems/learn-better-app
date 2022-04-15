@@ -1,17 +1,17 @@
 //? UTILS
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { global } from '../../globals/global';
 import Constants from 'expo-constants';
 
-export default function Container ({children}:any) {
+export default function Container ({style, children}:any) {
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor="#3C3E4D" />
 
-      <View style={styles.content}>
+      <KeyboardAvoidingView behavior='padding' style={[styles.content, style]}>
         {children}
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -27,8 +27,9 @@ const styles = StyleSheet.create({
 
   content: {
     width: '100%',
-    flex: 1,
     padding: 20,
-    paddingHorizontal: 30
+    maxWidth: 420,
+    flex: 1,
+    justifyContent: 'space-between'
   }
 });

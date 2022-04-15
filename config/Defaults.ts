@@ -20,7 +20,7 @@ setCustomTextInput({
     padding: 18,
     paddingHorizontal: 28,
     borderRadius: 500,
-    color: '#FFF'
+    color: '#FFF',
   }
 });
 
