@@ -30,6 +30,5 @@ const styles = StyleSheet.create({
     padding: 20,
     maxWidth: 420,
     flex: 1,
-    justifyContent: 'space-between'
   }
 });

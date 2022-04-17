@@ -11,12 +11,12 @@ import LabelInput from '../../components/LabelInput';
 
 //? ROUTES
 
-export default function Home ({navigation}:any) {
+export default function Login ({navigation}:any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
-    <Container>
+    <Container style={{justifyContent: 'space-between'}}>
       <View>
         <Image source={global.images.Logo.HorizontalWhite} style={styles.logo} />
         <Text style={styles.desc}>Entre com os dados da sua conta para continuar</Text>
@@ -29,6 +29,10 @@ export default function Home ({navigation}:any) {
 
         <LabelInput text="Senha" required={true}>
           <TextInput placeholder="***********" style={{flexShrink: 0}} secureTextEntry={true} onChangeText={(val:string) => setPassword(val)} />
+
+          <TouchableOpacity style={styles.forgot} onPress={() => navigation.navigate("Auth", { screen: "ForgotPassword"} )}>
+            <Text>Esqueci minha senha</Text>
+          </TouchableOpacity>
         </LabelInput>
       </View>
       
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
   forgot: {
     marginLeft: 'auto',
     marginRight: 20,
-    marginTop: 14
+    marginTop: 6
   },
 
   account: {
