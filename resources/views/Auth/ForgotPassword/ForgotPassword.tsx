@@ -4,10 +4,9 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { useState } from 'react';
 
 //? COMPONENTS
-import Container from '../../components/Container';
-import ActionButton from '../../components/ActionButton';
-import LabelInput from '../../components/LabelInput';
-
+import Container from '../../../components/Container';
+import ActionButton from '../../../components/ActionButton';
+import LabelInput from '../../../components/LabelInput';
 
 export default function ForgotPassword ({navigation}:any) {
   const [email, setEmail] = useState("");
@@ -21,7 +20,7 @@ export default function ForgotPassword ({navigation}:any) {
       </LabelInput>
       
       <View>
-        <ActionButton navigation={navigation} context={"Auth"} screen={"ForgotPasswordConfirmation"}>Continuar</ActionButton>
+        <ActionButton context="Auth" navigation={navigation} screen={"ForgotPassword_Confirmation"}>Continuar</ActionButton>
       </View>
     </Container>
   );

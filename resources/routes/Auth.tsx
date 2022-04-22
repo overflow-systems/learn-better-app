@@ -4,8 +4,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //? ROUTES
 import Login from '../views/Auth/Login';
-import ForgotPassword from '../views/Auth/ForgotPassword';
-import ForgotPasswordConfirmation from '../views/Auth/ForgotPasswordConfirmation';
+
+//  FORGOT PASSWORD
+import ForgotPassword from '../views/Auth/ForgotPassword/ForgotPassword';
+import ForgotPasswordConfirmation from '../views/Auth/ForgotPassword/Confirmation';
+
+//  CREATE ACCOUNT
+import CreateAccountIntro from '../views/Auth/CreateAccount/Intro';
+import CreateAccountForm from '../views/Auth/CreateAccount/Form';
+import CreateAccountTags from '../views/Auth/CreateAccount/Tags';
+import CreateAccountConfirmation from '../views/Auth/CreateAccount/Confirmation';
 
 import Header from '../components/Header';
 
@@ -24,14 +32,25 @@ export default function Auth () {
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
 
+      {/* FORGOT PASSWORD */}
       <Stack.Screen name="ForgotPassword" component={ForgotPassword}
-        options={{
-          ...headerConfig,
-          headerTitle: () => (<Header text="Esqueci minha senha" />)
-          }} />
+        options={{...headerConfig, headerTitle: () => (<Header text="Esqueci minha senha" />) }} />
 
-      <Stack.Screen name="ForgotPasswordConfirmation" component={ForgotPasswordConfirmation}
+      <Stack.Screen name="ForgotPassword_Confirmation" component={ForgotPasswordConfirmation}
         options={{headerShown: false}} />
+      
+      {/* CREATE ACCOUNT */}
+      <Stack.Screen name="CreateAccount_Intro" component={CreateAccountIntro}
+        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
+
+      <Stack.Screen name="CreateAccount_Form" component={CreateAccountForm}
+        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
+
+      <Stack.Screen name="CreateAccount_Tags" component={CreateAccountTags}
+        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
+
+      <Stack.Screen name="CreateAccount_Confirmation" component={CreateAccountConfirmation}
+        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
     </Stack.Navigator>
   );
 }

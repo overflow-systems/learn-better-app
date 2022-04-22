@@ -9,8 +9,6 @@ import Container from '../../components/Container';
 import ActionButton from '../../components/ActionButton';
 import LabelInput from '../../components/LabelInput';
 
-//? ROUTES
-
 export default function Login ({navigation}:any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +22,7 @@ export default function Login ({navigation}:any) {
 
       <View style={styles.content}>
         <LabelInput text="Email" required={true}>
-          <TextInput placeholder="example@email.com.br" onChangeText={(val:string) => setEmail(val)} />
+          <TextInput keyboardType='email-address' placeholder="example@email.com.br" onChangeText={(val:string) => setEmail(val)} />
         </LabelInput>
 
         <LabelInput text="Senha" required={true}>
@@ -37,9 +35,9 @@ export default function Login ({navigation}:any) {
       </View>
       
       <View style={{marginVertical: 50}}>
-        <ActionButton route="Home">Entrar</ActionButton>
+        <ActionButton navigation={navigation} context="App" route="Index">Entrar</ActionButton>
 
-        <TouchableOpacity style={styles.account}>
+        <TouchableOpacity onPress={() => navigation.navigate("Auth", {screen: "CreateAccount_Intro"})} style={styles.account}>
           <Text style={styles.account_text}>Ainda não tenho uma conta</Text>
         </TouchableOpacity>
       </View>

@@ -1,16 +1,14 @@
 //? UTILS
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import { global } from '../../../globals/global';
+import { StyleSheet, Text, View } from 'react-native';
+import { global } from '../../../../globals/global';
 
 //? COMPONENTS
-import Container from '../../components/Container';
-import ActionButton from '../../components/ActionButton';
+import Container from '../../../components/Container';
+import ActionButton from '../../../components/ActionButton';
 
 import Icon from 'react-native-vector-icons/Entypo';
 
-//? ROUTES
-
-export default function ForgotPasswordConfirmation ({navigation}:any) {
+export default function Confirmation ({navigation}:any) {
   return (
     <Container style={{paddingTop: 100}}>
       <View style={styles.circle}>
@@ -21,7 +19,7 @@ export default function ForgotPasswordConfirmation ({navigation}:any) {
 
       <Text style={{textAlign: 'center', marginTop: 10}}>Uma mensagem foi enviada para o email <Text style={{color:"#FFF"}}>example@email.com</Text> com as intruções para a recuperação da sua conta</Text>
 
-      <ActionButton style={{marginTop: 40}} navigation={navigation} context="Auth" screen="Login">Voltar</ActionButton>
+      <ActionButton style={{marginTop: 40}} navigation={navigation} screen="Login">Voltar</ActionButton>
     </Container>
   );
 }

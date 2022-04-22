@@ -2,7 +2,7 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { global } from '../../globals/global';
 
-export default function ActionButton ({style, children, screen, context, navigation}:any) {
+export default function ActionButton ({style, children, screen, context = "Auth", navigation}:any) {
   return (
     <TouchableOpacity onPress={() => navigation.navigate(context, {screen})} style={[styles.button, style]}>
       <Text style={styles.text}>{children}</Text>
