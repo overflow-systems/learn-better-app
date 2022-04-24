@@ -1,16 +1,11 @@
 //? UTILS
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { global } from '../../../../globals/global';
-import { useState } from 'react';
+import { StyleSheet, Text, Image } from 'react-native';
 
 //? COMPONENTS
 import Container from '../../../components/Container';
 import ActionButton from '../../../components/ActionButton';
 
 const Confirmation = require('../../../../assets/images/confirmation.png');
-
-//? STEPS
-import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function CreateAccountConfirmation ({navigation}:any) {
   return (

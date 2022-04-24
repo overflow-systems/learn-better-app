@@ -4,11 +4,11 @@ import { global } from '../../globals/global';
 import { useState } from 'react';
 
 interface Item {
-  index:number,
-  label:string
+  id:number,
+  nome:string
 }
 
-export default function ActionButton ({style, list}:any) {
+export default function ActionButton ({list, setTags}:any) {
   const content:any[] = [];
 
   const [selected, setSelected] = useState<number[]>([]);
@@ -21,14 +21,15 @@ export default function ActionButton ({style, list}:any) {
     else result.push(index);
     
     setSelected(result)
+    setTags(result);
   }
 
   list.forEach((item:Item) => {
     content.push(
-      <TouchableOpacity key={item.index} onPress={() => addTag(item.index)}
-        style={selected.includes(item.index) ? [styles.active, styles.item] : [styles.item]}>
+      <TouchableOpacity key={item.id} onPress={() => addTag(item.id)}
+        style={selected.includes(item.id) ? [styles.active, styles.item] : [styles.item]}>
 
-        <Text style={styles.text}>{item.label}</Text>
+        <Text style={styles.text}>{item.nome}</Text>
 
       </TouchableOpacity>
     )

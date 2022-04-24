@@ -2,6 +2,8 @@
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { global } from '../../../globals/global';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useState } from 'react';
 
 //? COMPONENTS
@@ -13,9 +15,20 @@ export default function Login ({navigation}:any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const Logout = async () => {
+    try {
+      await AsyncStorage.removeItem("session");
+
+      navigation.navigate("Auth", { screen: "Login" })
+    }
+    catch (e) {
+      alert(e)
+    }
+  }
+
   return (
     <Container style={{justifyContent: 'space-between'}}>
-      <Text>Testee</Text>
+      <Text onPress={Logout}>Deslogar</Text>
     </Container>
   );
 }

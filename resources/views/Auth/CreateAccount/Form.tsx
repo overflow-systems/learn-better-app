@@ -1,5 +1,5 @@
 //? UTILS
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { global } from '../../../../globals/global';
 import { useState } from 'react';
 
@@ -13,20 +13,42 @@ import Step03 from './Step-03';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
-export default function CreateAccountIntro ({navigation}:any) {
+export default function CreateAccountIntro ({route, navigation}:any) {
   const [step, setStep] = useState(1);
+  const [tipo, setTipo] = useState(route.params.tipo ?? "")
 
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
+  //  STEP 01
+  const [nome, setNome] = useState("")
+  const [sobrenome, setSobrenome] = useState("")
+  const [email, setEmail] = useState("")
+  const [celular, setCelular] = useState("")
 
+  //  STEP 02
+  const [genero, setGenero] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+
+  //  STEP 03
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  
   var Content;
 
   const final_step = 3;
 
-  if(step == 1) Content = <Step01 />
-  if(step == 2) Content = <Step02 />
-  if(step == 3) Content = <Step03 />
+  if(step == 1) Content = <Step01 setNome={setNome} setSobrenome={setSobrenome} setEmail={setEmail} setCelular={setCelular} />
+  if(step == 2) Content = <Step02 setGenero={setGenero} setCpf={setCpf} setDataNascimento={setDataNascimento} />
+  if(step == 3) Content = <Step03 setSenha={setSenha} setConfirmarSenha={setConfirmarSenha} />
+
+  const next = () => {
+    if(step < final_step) setStep(step+1)
+
+    else {
+      let data = {tipo, nome, sobrenome, email, celular, genero, cpf, data_nascimento: dataNascimento, senha, confirmarSenha}
+
+      navigation.navigate("Auth", { screen: "CreateAccount_Tags", params: { data } }) 
+    }
+  }
 
   return (
     <Container>
@@ -35,7 +57,7 @@ export default function CreateAccountIntro ({navigation}:any) {
 
       {Content}
 
-      <TouchableOpacity onPress={() => step < final_step ? setStep(step+1) : navigation.navigate("Auth", { screen: "CreateAccount_Tags"})} style={styles.next}>
+      <TouchableOpacity onPress={next} style={styles.next}>
         <Text style={styles.next_desc}>Continuar</Text>
 
         <Icon name="caretright" size={20} color={global.colors.lighterGray} />

@@ -15,7 +15,7 @@ export default function CreateAccountIntro ({navigation}:any) {
       <Text style={styles.desc}>Antes de seguir para seus dados, selecione o tipo de conta que você deseja criar:</Text>
 
       <View style={styles.row}>
-        <TouchableOpacity onPress={() => {navigation.navigate("Auth", { screen: "CreateAccount_Form" })}} style={styles.item}>
+        <TouchableOpacity onPress={() => {navigation.navigate("Auth", { screen: "CreateAccount_Form", params: { tipo: 'mentor' } })}} style={styles.item}>
           <View style={styles.circle}>
             <Image style={styles.icon} source={Mentor} />
           </View>
@@ -23,7 +23,7 @@ export default function CreateAccountIntro ({navigation}:any) {
           <Text style={styles.bold}>MENTOR</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity onPress={() => {navigation.navigate("Auth", { screen: "CreateAccount_Form" })}} style={styles.item}>
+        <TouchableOpacity onPress={() => {navigation.navigate("Auth", { screen: "CreateAccount_Form", params: { tipo: 'mentorado' }})}} style={styles.item}>
           <View style={styles.circle}>
             <Image style={styles.icon} source={Mentee} />
           </View>

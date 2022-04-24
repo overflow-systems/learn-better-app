@@ -7,15 +7,12 @@ import LabelInput from '../../../components/LabelInput';
 
 import { TextInputMask } from 'react-native-masked-text';
 
-export default function CreateAccountIntro ({navigation}:any) {
-  const [sexo, setSexo] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
+export default function CreateAccountIntro ({setGenero, setCpf, setDataNascimento}:any) {
 
   return (
     <View style={styles.form}>
-      <LabelInput text="Nome" required={true}>
-        <TextInput placeholder="Selecione" onChangeText={(val:string) => setSexo(val)} />
+      <LabelInput text="Genero" required={true}>
+        <TextInput placeholder="Selecione" onChangeText={(val:string) => setGenero(val)} />
       </LabelInput>
 
       <LabelInput text="CPF" required={true}>

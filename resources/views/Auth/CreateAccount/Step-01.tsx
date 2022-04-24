@@ -7,15 +7,16 @@ import LabelInput from '../../../components/LabelInput';
 
 import { TextInputMask } from 'react-native-masked-text';
 
-export default function CreateAccountIntro ({navigation}:any) {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
+export default function CreateAccountIntro ({setNome, setSobrenome, setEmail, setCelular}:any) {
 
   return (
     <View style={styles.form}>
       <LabelInput text="Nome" required={true}>
-        <TextInput placeholder="Afonso Chaves da Silva" onChangeText={(val:string) => setNome(val)} />
+        <TextInput placeholder="Afonso" onChangeText={(val:string) => {setNome(val)}} />
+      </LabelInput>
+
+      <LabelInput text="Sobrenome" required={true}>
+        <TextInput placeholder="Chaves da Silva" onChangeText={(val:string) => {setSobrenome(val)}} />
       </LabelInput>
 
       <LabelInput text="Email" required={true}>
@@ -23,7 +24,7 @@ export default function CreateAccountIntro ({navigation}:any) {
       </LabelInput>
 
       <LabelInput text="Telefone" required={true}>
-        <TextInputMask type={'cel-phone'} placeholder="(00) 0000-0000" value={telefone} onChangeText={text => setTelefone(text)}/>
+        <TextInputMask type={'cel-phone'} placeholder="(00) 0000-0000" onChangeText={text => setCelular(text)}/>
       </LabelInput>
     </View>
   );

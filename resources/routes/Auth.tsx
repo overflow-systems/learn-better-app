@@ -50,7 +50,7 @@ export default function Auth () {
         options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
 
       <Stack.Screen name="CreateAccount_Confirmation" component={CreateAccountConfirmation}
-        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
+        options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }
