@@ -8,6 +8,14 @@ import LabelInput from '../../../components/LabelInput';
 import { TextInputMask } from 'react-native-masked-text';
 
 export default function CreateAccountIntro ({setNome, setSobrenome, setEmail, setCelular}:any) {
+  const cellphone_raw = (val:string, settings:any) => {
+    let result = val;
+
+    //? replaceAll não funciona, necessário fazer manualmente
+    result = result.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+
+    return result;
+  }
 
   return (
     <View style={styles.form}>
@@ -24,7 +32,15 @@ export default function CreateAccountIntro ({setNome, setSobrenome, setEmail, se
       </LabelInput>
 
       <LabelInput text="Telefone" required={true}>
-        <TextInputMask type={'cel-phone'} placeholder="(00) 0000-0000" onChangeText={text => setCelular(text)}/>
+        <TextInputMask
+        type={'custom'}
+        options={{
+          mask: '(99) 99999-9999',
+          getRawValue: (val, settings) => cellphone_raw(val, settings)
+        }}
+        placeholder="(00) 00000-0000"
+        includeRawValueInChangeText={true}
+        onChangeText={(val:string, raw:string|undefined) => setCelular(raw)}/>
       </LabelInput>
     </View>
   );

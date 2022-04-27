@@ -71,7 +71,7 @@ export default function Login ({navigation}:any) {
         <LabelInput text="Senha" required={true}>
           <TextInput placeholder="***********" style={{flexShrink: 0}} secureTextEntry={true} onChangeText={(val:string) => setSenha(val)} />
 
-          <TouchableOpacity style={styles.forgot} onPress={() => navigation.navigate("Auth", { screen: "ForgotSenha"} )}>
+          <TouchableOpacity style={styles.forgot} onPress={() => navigation.navigate("Auth", { screen: "ForgotPassword"} )}>
             <Text>Esqueci minha senha</Text>
           </TouchableOpacity>
         </LabelInput>

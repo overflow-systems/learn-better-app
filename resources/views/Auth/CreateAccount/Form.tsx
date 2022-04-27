@@ -34,17 +34,37 @@ export default function CreateAccountIntro ({route, navigation}:any) {
   
   var Content;
 
-  const final_step = 3;
+  const final_step = 4;
 
   if(step == 1) Content = <Step01 setNome={setNome} setSobrenome={setSobrenome} setEmail={setEmail} setCelular={setCelular} />
-  if(step == 2) Content = <Step02 setGenero={setGenero} setCpf={setCpf} setDataNascimento={setDataNascimento} />
+  if(step == 2) Content = <Step02 genero={genero} setGenero={setGenero} setCpf={setCpf} setDataNascimento={setDataNascimento} />
   if(step == 3) Content = <Step03 setSenha={setSenha} setConfirmarSenha={setConfirmarSenha} />
 
   const next = () => {
-    if(step < final_step) setStep(step+1)
+    if(step < final_step) {
+      let valid = false;
+
+      if (step == 1) {
+        valid = (global.validation.required(nome) && global.validation.required(sobrenome) && global.validation.required(email) && global.validation.celular(celular));
+      }
+      
+      if (step == 2) {
+        valid = (global.validation.required(genero) && global.validation.cpf(cpf) && global.validation.date(dataNascimento));
+      }
+
+      if (step == 3) {
+        
+        valid = (global.validation.required(senha) && global.validation.required(confirmarSenha) && (senha == confirmarSenha));
+      }
+
+      
+      if(valid) setStep(step+1);
+
+      else alert("erro");
+    }
 
     else {
-      let data = {tipo, nome, sobrenome, email, celular, genero, cpf, data_nascimento: dataNascimento, senha, confirmarSenha}
+      let data = { tipo, nome, sobrenome, email, celular, genero, cpf, data_nascimento: dataNascimento, senha, confirmarSenha }
 
       navigation.navigate("Auth", { screen: "CreateAccount_Tags", params: { data } }) 
     }
