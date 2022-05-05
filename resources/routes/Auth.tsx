@@ -2,6 +2,9 @@ import { StyleSheet } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+
 //? ROUTES
 import Login from '../views/Auth/Login';
 
@@ -11,6 +14,8 @@ import ForgotPasswordConfirmation from '../views/Auth/ForgotPassword/Confirmatio
 
 //  CREATE ACCOUNT
 import CreateAccountIntro from '../views/Auth/CreateAccount/Intro';
+import CreateAccountMentee from '../views/Auth/CreateAccount/Mentee';
+import CreateAccountMentor from '../views/Auth/CreateAccount/Mentor';
 import CreateAccountForm from '../views/Auth/CreateAccount/Form';
 import CreateAccountTags from '../views/Auth/CreateAccount/Tags';
 import CreateAccountConfirmation from '../views/Auth/CreateAccount/Confirmation';
@@ -18,6 +23,9 @@ import CreateAccountConfirmation from '../views/Auth/CreateAccount/Confirmation'
 import Header from '../components/Header';
 
 import { global } from '../../globals/global';
+
+import Loading from '../components/Loading';
+import { useState } from 'react';
 
 const headerConfig = {
   headerBackVisible: false,
@@ -27,7 +35,7 @@ const headerConfig = {
 
 const Stack = createNativeStackNavigator();
 
-export default function Auth () {
+export default function Auth ({route}:any) {
   return (
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
@@ -41,6 +49,12 @@ export default function Auth () {
       
       {/* CREATE ACCOUNT */}
       <Stack.Screen name="CreateAccount_Intro" component={CreateAccountIntro}
+        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
+
+      <Stack.Screen name="CreateAccount_Mentee" component={CreateAccountMentee}
+        options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
+
+      <Stack.Screen name="CreateAccount_Mentor" component={CreateAccountMentor}
         options={{...headerConfig, headerTitle: () => (<Header text="Criar Conta" />) }} />
 
       <Stack.Screen name="CreateAccount_Form" component={CreateAccountForm}

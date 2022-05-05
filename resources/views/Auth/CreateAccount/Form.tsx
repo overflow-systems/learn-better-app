@@ -7,9 +7,9 @@ import { useState } from 'react';
 import Container from '../../../components/Container';
 
 //? STEPS
-import Step01 from './Step-01';
-import Step02 from './Step-02';
-import Step03 from './Step-03';
+import Step01 from './Steps/Step-01';
+import Step02 from './Steps/Step-02';
+import Step03 from './Steps/Step-03';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -34,40 +34,61 @@ export default function CreateAccountIntro ({route, navigation}:any) {
   
   var Content;
 
-  const final_step = 4;
+  const final_step = 3;
 
   if(step == 1) Content = <Step01 setNome={setNome} setSobrenome={setSobrenome} setEmail={setEmail} setCelular={setCelular} />
   if(step == 2) Content = <Step02 genero={genero} setGenero={setGenero} setCpf={setCpf} setDataNascimento={setDataNascimento} />
   if(step == 3) Content = <Step03 setSenha={setSenha} setConfirmarSenha={setConfirmarSenha} />
 
   const next = () => {
-    if(step < final_step) {
+    if(step <= final_step) {
       let valid = false;
+      let errors = [];
 
       if (step == 1) {
-        valid = (global.validation.required(nome) && global.validation.required(sobrenome) && global.validation.required(email) && global.validation.celular(celular));
+        if(!global.validation.required(nome)) errors.push({ validation: "required", field: "Nome"})
+        if(!global.validation.required(sobrenome)) errors.push({ validation: "required", field: "Sobrenome"})
+        if(!global.validation.required(email)) errors.push({ validation: "required", field: "Email"})
+        if(!global.validation.required(celular)) errors.push({ validation: "required", field: "Celular"})
+
+        if(!global.validation.email(email)) errors.push({ validation: "email", field: "Email"})
+        if(!global.validation.celular(celular)) errors.push({ validation: "celular", field: "Celular"})
       }
       
       if (step == 2) {
-        valid = (global.validation.required(genero) && global.validation.cpf(cpf) && global.validation.date(dataNascimento));
+        if(!global.validation.required(genero)) errors.push({ validation: "required", field: "Gênero"})
+        if(!global.validation.required(dataNascimento)) errors.push({ validation: "required", field: "Data de Nascimento"})
+        
+        if(!global.validation.date(dataNascimento)) errors.push({ validation: "date", field: "Data de Nascimento"})
       }
 
       if (step == 3) {
-        
-        valid = (global.validation.required(senha) && global.validation.required(confirmarSenha) && (senha == confirmarSenha));
+        if(!global.validation.required(senha)) errors.push({ validation: "required", field: "Senha"})
+        if(!global.validation.required(confirmarSenha)) errors.push({ validation: "required", field: "Confirmar Senha"})
+
+        if(!global.validation.password(senha)) errors.push({ validation: "password" })
+
+        if(senha != confirmarSenha) errors.push({ validation: "same_password" })
       }
 
+      valid = errors.length == 0;
       
-      if(valid) setStep(step+1);
+      if(valid) {
+        if(step < final_step) {
+          setStep(step+1);
+          return;
+        }
+      }
 
-      else alert("erro");
+      else {
+        global._alert.error(errors);
+        return;
+      }
     }
+    
+    let data = { tipo, nome, sobrenome, email, celular, genero: Number(genero), data_nascimento: dataNascimento, senha }
 
-    else {
-      let data = { tipo, nome, sobrenome, email, celular, genero, cpf, data_nascimento: dataNascimento, senha, confirmarSenha }
-
-      navigation.navigate("Auth", { screen: "CreateAccount_Tags", params: { data } }) 
-    }
+    navigation.navigate("Auth", { screen: "CreateAccount_Tags", params: { data } })
   }
 
   return (

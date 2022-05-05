@@ -1,9 +1,9 @@
 //? UTILS
-import { StyleSheet, View, TextInput } from 'react-native';
-import { global } from '../../../../globals/global';
+import { StyleSheet, View } from 'react-native';
+import { global } from '../../../../../globals/global';
 
 //? COMPONENTS
-import LabelInput from '../../../components/LabelInput';
+import LabelInput from '../../../../components/LabelInput';
 
 import { TextInputMask } from 'react-native-masked-text';
 import { Picker } from '@react-native-picker/picker';
@@ -20,38 +20,17 @@ export default function CreateAccountIntro ({genero, setGenero, setCpf, setDataN
     else return;
   };
 
-  const cpf_raw = (val:string, settings:any) => {
-    let result = val;
-
-    //? replaceAll não funciona, necessário fazer manualmente
-    result = result.replace(".", "").replace(".", "").replace("-", "");
-
-    return result;
-  }
-
   return (
     <View style={styles.form}>
       <LabelInput text="Genero" required={true}>
         <View style={styles.picker}>
           <Picker selectedValue={genero} onValueChange={(val:string) => {setGenero(val)}} dropdownIconColor={global.colors.lighterGray} style={{color: '#FFF'}}>
-            <Picker.Item label="Selecione" />
+            <Picker.Item label="Selecione" value="" />
             <Picker.Item label="Masculino" value="1" />
             <Picker.Item label="Feminino" value="2" />
             <Picker.Item label="Outros" value="3" />
           </Picker>
         </View>
-      </LabelInput>
-
-      <LabelInput text="CPF" required={true}>
-        <TextInputMask 
-          type={'custom'}
-          options={{
-            mask: '999.999.999-99',
-            getRawValue: (val, settings) => cpf_raw(val, settings)
-          }}
-          placeholder="000.000.000-00"
-          onChangeText={(val:string, raw:string|undefined) => setCpf(raw)}
-          includeRawValueInChangeText={true} />
       </LabelInput>
 
       <LabelInput text="Data de Nascimento" required={true}>

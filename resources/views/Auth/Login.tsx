@@ -22,30 +22,44 @@ export default function Login ({navigation}:any) {
     setLoading(true);
 
     if(email == "" || senha == "") {
-      alert("Preencha com seu email e senha de acesso");
-      setLoading(false)
+      alert("Preencha com seu email e senha de acesso")
+      setLoading(false);
       return;
     }
     
+    let config:Object = global.api.request_post;
+    
     axios({
-      method: 'post',
+      ...config,
       url: `${global.api.baseURL}/usuario/login`,
-      data: { email, senha }
+      data: { email, senha },
     })
     .then(async (res) => {
       let data = res.data;
 
       //?  SUCESSO
-      if(data.status == global._enum.ResponseStatus.SUCESSO) {
+      if(data.status == global._enum.ResponseStatus.SUCCESS) {
         let session = { id: data.id, token: data.token }
         await AsyncStorage.setItem("session", JSON.stringify(session))
         navigation.navigate("App", { screen: "Index"});
+        return;
       }
 
+      const message = data.mensagem ?? data.validation?.body?.message;
+
       //?  NÃO AUTORIZADO
-      if(data.status == global._enum.ResponseStatus.UNAUTHORIZED)
-        alert("Email ou senha incorretos, tente novamente")
+      if(data.status == global._enum.ResponseStatus.UNAUTHORIZED) {
+        alert(message)
+        return;
+      }
       
+      //?  BAD REQUEST
+      if(data.status == global._enum.ResponseStatus.BAD_REQUEST) {
+        alert(message)
+        return;
+      }
+
+      alert(message)
     })
     .catch(res => {
       alert("Erro interno, tente novamente")

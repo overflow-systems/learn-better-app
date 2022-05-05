@@ -16,7 +16,8 @@ export default function CreateAccountIntro ({navigation, route}:any) {
 
   const [list, setList] = useState([]);
   const [tags, setTags] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios({
@@ -25,30 +26,51 @@ export default function CreateAccountIntro ({navigation, route}:any) {
     })
     .then(res => {
       let data = res.data;
-
+      
+      setLoading(false)
+      
       setList(data);
     })
     .catch(res => {
+      setLoading(false)
       console.log(res);
+      alert("Ocorreu um erro inesperado.");
     })
   }, []);
 
   const createAccount = () => {
     setLoading(true);
 
+    let body = { ...data, tags }
+
+    let config:Object = global.api.request_post;
+
     axios({
-      method: 'POST',
+      ...config,
       url: `${global.api.baseURL}/usuario/criar`,
-      data: { ...data, tags }
+      data: body,
     })
     .then((res) => {
-      //?  SUCESSO
-      if(res.data.status == global._enum.ResponseStatus.SUCESSO)
-        navigation.navigate("Auth", { screen: "CreateAccount_Confirmation"})
+      let data = res.data;
+      let status = data.status;
 
+      //?  SUCESSO
+      if(status == global._enum.ResponseStatus.SUCCESS) {
+        navigation.navigate("Auth", { screen: "CreateAccount_Confirmation"})
+        return;
+      }
+
+      const message = data.mensagem ?? data.validation?.body?.message;
+
+      //?  UNAUTHORIZED
+      if(status == global._enum.ResponseStatus.BAD_REQUEST)
+        alert(message)
+        
       //?  BAD REQUEST
-      else
-        alert(res.data.mensagem)
+      if(status == global._enum.ResponseStatus.BAD_REQUEST)
+        alert(message)
+
+      alert(message)
     })
     .catch((res) => {
       alert("Erro interno, tente novamente")

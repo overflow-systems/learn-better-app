@@ -1,9 +1,8 @@
 //? UTILS
 import { StyleSheet, View, TextInput } from 'react-native';
-import { useState } from 'react';
 
 //? COMPONENTS
-import LabelInput from '../../../components/LabelInput';
+import LabelInput from '../../../../components/LabelInput';
 
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -31,7 +30,7 @@ export default function CreateAccountIntro ({setNome, setSobrenome, setEmail, se
         <TextInput keyboardType='email-address' placeholder="example@email.com.br" onChangeText={(val:string) => setEmail(val)} />
       </LabelInput>
 
-      <LabelInput text="Telefone" required={true}>
+      <LabelInput text="Celular" required={true}>
         <TextInputMask
         type={'custom'}
         options={{

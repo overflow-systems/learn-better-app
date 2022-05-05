@@ -3,6 +3,7 @@ import { fonts } from './fonts';
 import { images } from './images';
 import { api } from './api';
 import { validation } from './validation';
+import { _alert } from './alert';
 import { _enum } from './enum/index';
 
 const global = {
@@ -11,7 +12,9 @@ const global = {
   images,
   api,
   validation,
-  _enum
+  _alert,
+  _enum,
+  showModal: false
 }
 
 export { global };

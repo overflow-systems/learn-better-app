@@ -2,11 +2,11 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { global } from '../../globals/global';
 
-export default function ActionButton ({style, children, screen, context = "Auth", navigation, onPress}:any) {
+export default function ActionButton ({style, children, screen, params = {}, context = "Auth", navigation, onPress}:any) {
   let Press = () => {}
 
   if(screen)
-    Press = () => navigation.navigate(context, {screen})
+    Press = () => navigation.navigate(context, {screen, params})
   else if (onPress)
     Press = onPress
 

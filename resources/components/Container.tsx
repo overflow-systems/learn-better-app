@@ -5,14 +5,17 @@ import { global } from '../../globals/global';
 import Constants from 'expo-constants';
 
 import Loading from './Loading';
+import Modal from './Modal';
 
-export default function Container ({style, children, loading, alert}:any) {
+export default function Container ({style, children, loading}:any) {
   return (
     <View style={styles.container}>
-      <StatusBar style="light" backgroundColor="#3C3E4D" />
+      <StatusBar style="light" backgroundColor={ global.colors.background } />
 
       <KeyboardAvoidingView behavior='height' style={[styles.content, style ]}>
         {loading? <Loading /> : null}
+
+        {/* {modal.show? <Modal title={modal.title} desc={modal.desc} success={modal.success??false} confirm={modal.confirm} onConfirm={modal.onConfirm} onCancel={modal.onCancel} /> : null } */}
 
         {children}
       </KeyboardAvoidingView>
@@ -26,7 +29,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   content: {
