@@ -20,12 +20,9 @@ import CreateAccountForm from '../views/Auth/CreateAccount/Form';
 import CreateAccountTags from '../views/Auth/CreateAccount/Tags';
 import CreateAccountConfirmation from '../views/Auth/CreateAccount/Confirmation';
 
-import Header from '../components/Header';
+import Header from '../components/Headers/Header';
 
 import { global } from '../../globals/global';
-
-import Loading from '../components/Loading';
-import { useState } from 'react';
 
 const headerConfig = {
   headerBackVisible: false,

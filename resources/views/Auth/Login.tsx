@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'reac
 import { global } from '../../../globals/global';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 //? COMPONENTS
 import Container from '../../components/Container';
@@ -17,6 +17,15 @@ export default function Login ({navigation}:any) {
   const [senha, setSenha] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  const verifyLogin = async () => {
+    let session = await AsyncStorage.getItem("session");
+
+    console.log(session);
+    
+
+    if(session) navigation.navigate("App", { screen: "Index"});
+  }
 
   const LoginSubmit = () => {
     setLoading(true);

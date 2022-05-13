@@ -1,7 +1,7 @@
 //? UTILS
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { global } from '../../globals/global';
+import { global } from '../../../globals/global';
 
 import { useNavigation } from '@react-navigation/native';
 
