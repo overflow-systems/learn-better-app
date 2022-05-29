@@ -1,0 +1,17 @@
+export interface ProfileInterface {
+  apresentacao?: string,
+  celular: number,
+  data_criacao: Date,
+  data_nascimento: Date,
+  data_ultima_atualizacao: Date,
+  email: string,
+  genero: number,
+  id: number,
+  id_socket: string,
+  mentor: boolean,
+  mentorado: boolean,
+  nome: string,
+  senha: string,
+  sobrenome: string,
+  token: string,
+}

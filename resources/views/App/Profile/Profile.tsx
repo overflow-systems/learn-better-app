@@ -2,6 +2,7 @@
 import { StyleSheet, Text, View, Image,TouchableOpacity, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { global } from '../../../../globals/global';
+import axios from 'axios';
 
 import IconFT from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -10,15 +11,53 @@ const Pic = require('../../../../assets/images/profile.png');
 
 //? COMPONENTS
 import Container from '../../../components/Container';
+import { useEffect, useState } from 'react';
+
 
 export default function Profile ({navigation}:any) {
+  const [session, setSession] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>();
+
+  useEffect(() => {
+    async function getSession() { 
+      let ret:string = await AsyncStorage.getItem("session")??"";
+      setSession(JSON.parse(ret));
+    }
+
+    getSession()
+  }, []);
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${global.api.baseURL}/usuario/buscarLogin`,
+      headers: {
+        id: session.id,
+        token: session.token,
+        tipo: session.tipo
+      }
+    })
+    .then(res => {
+      let data = res.data;
+  
+      setLoading(false);
+      setProfile(data);
+    })
+    .catch(res => { 
+      setLoading(false);
+      console.log(res);
+      alert("Ocorreu um erro inesperado");
+    });
+  }, [session])
+
   const Logout = async () => {
     await AsyncStorage.removeItem("session");
     navigation.navigate("Auth", { screen: "Login" })
   }
   
   return (
-    <Container style={{paddingVertical: 0, paddingHorizontal: 0}}>
+    <Container loading={loading} style={{paddingVertical: 0, paddingHorizontal: 0}}>
       <ScrollView style={{ paddingHorizontal: 20}}>
         <TouchableOpacity onPress={() => { navigation.navigate("App", { screen: "Profile_Edit" }) }} style={styles.pic_container}>
           <Image source={Pic} style={styles.pic} />
@@ -28,43 +67,38 @@ export default function Profile ({navigation}:any) {
           </View>
         </TouchableOpacity>
 
-        <Text style={styles.name}>Ismael Rafael da Silva Sousa</Text>
-        <Text style={styles.member}>Membro desde 19/01/2022</Text>
+        <Text style={styles.name}>{profile?.nome} {profile?.sobrenome}</Text>
+        <Text style={styles.member}>Membro desde {Date.parse(profile?.data_criacao)}</Text>
 
         <View style={styles.label_row}>
           <View style={styles.label_container}>
             <Text style={styles.label}>Email:</Text>
-            <Text style={styles.value}>ismaelrsousa.contato@gmail.com</Text>
+            <Text style={styles.value}>{profile?.email}</Text>
           </View>
 
           <View style={[styles.label_container, styles.half]}>
             <Text style={styles.label}>Telefone:</Text>
-            <Text style={styles.value}>(13) 98100-7944</Text>
+            <Text style={styles.value}>{profile?.celular}</Text>
           </View>
 
           <View style={[styles.label_container, styles.half]}>
             <Text style={styles.label}>Data de Nascimento:</Text>
-            <Text style={styles.value}>14/07/2001</Text>
+            <Text style={styles.value}>{profile?.data_nascimento}</Text>
           </View>
 
           <View style={[styles.label_container, styles.half]}>
-            <Text style={styles.label}>Sexo:</Text>
-            <Text style={styles.value}>Masculino</Text>
+            <Text style={styles.label}>Gênero:</Text>
+            <Text style={styles.value}>{global._enum.Genero[profile?.genero??0]}</Text>
           </View>
 
           <View style={[styles.label_container, styles.half]}>
             <Text style={styles.label}>Senha:</Text>
-            <Text style={styles.value}>***********</Text>
-          </View>
-
-          <View style={styles.label_container}>
-            <Text style={styles.label}>CPF:</Text>
-            <Text style={styles.value}>499.042.178-74</Text>
+            <Text style={styles.value}>{profile? "***********" : ""}</Text>
           </View>
         </View>
 
         <View style={styles.bottom}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity  onPress={() => { navigation.navigate("App", { screen: "Profile_Tags" }) }} style={styles.button}>
             <Icon name="user-alt" color={global.colors.textGray} size={16} style={{marginRight: 10}} />
             <Text style={styles.button_text}>Editar minhas áreas de interesse</Text>
           </TouchableOpacity>

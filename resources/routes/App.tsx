@@ -17,6 +17,7 @@ import Notifications from '../views/App/Notifications';
 
 import Profile from '../views/App/Profile/Profile';
 import Profile_Edit from '../views/App/Profile/Profile_Edit';
+import Profile_Tags from '../views/App/Profile/Profile_Tags';
 
 import Mentory from '../views/App/Mentory/Index';
 
@@ -52,6 +53,9 @@ export default function App ({navigation}:any) {
         options={{...headerConfig, headerTitle: () => (<Header text="Meu Perfil" />) }} />
 
       <Stack.Screen name="Profile_Edit" component={Profile_Edit}
+        options={{...headerConfig, headerTitle: () => (<Header text="Meu Perfil" />) }} />
+
+      <Stack.Screen name="Profile_Tags" component={Profile_Tags}
         options={{...headerConfig, headerTitle: () => (<Header text="Meu Perfil" />) }} />
 
       {/* MENTORY */}

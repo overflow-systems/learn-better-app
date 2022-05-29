@@ -1,5 +1,5 @@
 export const api = {
-  baseURL: "http://192.168.15.12:3333",
+  baseURL: "http://192.168.15.6:3333",
   // baseURL: "https://learnbetter-api.herokuapp.com",
 
   request_post: {

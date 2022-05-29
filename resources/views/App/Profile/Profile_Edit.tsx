@@ -1,6 +1,9 @@
 //? UTILS
 import { StyleSheet, Text, View, Image,TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { global } from '../../../../globals/global';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -13,17 +16,57 @@ const Pic = require('../../../../assets/images/profile.png');
 
 //? COMPONENTS
 import Container from '../../../components/Container';
-import { useState } from 'react';
 
 export default function Profile_Edit ({navigation}:any) {
+  const [session, setSession] = useState<any>({});
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>();
+
   const [nome, setNome] = useState("")
   const [sobrenome, setSobrenome] = useState("")
   const [email, setEmail] = useState("")
   const [celular, setCelular] = useState<string | undefined>("")
   
   const [genero, setGenero] = useState("");
-  const [cpf, setCpf] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
+
+  useEffect(() => {
+    async function getSession() { 
+      let ret:string = await AsyncStorage.getItem("session")??"";
+      setSession(JSON.parse(ret));
+    }
+
+    getSession()
+  }, []);
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${global.api.baseURL}/usuario/buscarLogin`,
+      headers: {
+        id: session.id,
+        token: session.token,
+        tipo: session.tipo
+      }
+    })
+    .then(res => {
+      let data = res.data;
+  
+      setLoading(false);
+      
+      setNome(data.nome);
+      setSobrenome(data.sobrenome);
+      setEmail(data.email);
+      setCelular(data.celular);
+      setGenero(data.genero);
+      setDataNascimento(data.data_nascimento);
+    })
+    .catch(res => { 
+      setLoading(false);
+      console.log(res);
+      alert("Ocorreu um erro inesperado");
+    });
+  }, [session])
 
   const cellphone_raw = (val:string, settings:any) => {
     let result = val;
@@ -45,27 +88,28 @@ export default function Profile_Edit ({navigation}:any) {
   };
 
   return (
-    <Container style={{paddingVertical: 0, paddingHorizontal: 0}}>
+    <Container loading={loading} style={{paddingVertical: 0, paddingHorizontal: 0}}>
       <ScrollView style={{ paddingHorizontal: 20}}>
         <TouchableOpacity style={styles.pic_container}>
           <Image source={Pic} style={styles.pic} />
         </TouchableOpacity>
 
         <LabelInput text="Nome" required={true}>
-          <TextInput placeholder="Afonso" onChangeText={(val:string) => {setNome(val)}} />
+          <TextInput placeholder="Afonso" value={nome} onChangeText={(val:string) => {setNome(val)}} />
         </LabelInput>
 
         <LabelInput text="Sobrenome" required={true}>
-          <TextInput placeholder="Chaves da Silva" onChangeText={(val:string) => {setSobrenome(val)}} />
+          <TextInput placeholder="Chaves da Silva" value={sobrenome} onChangeText={(val:string) => {setSobrenome(val)}} />
         </LabelInput>
 
         <LabelInput text="Email" required={true}>
-          <TextInput keyboardType='email-address' placeholder="example@email.com.br" onChangeText={(val:string) => setEmail(val)} />
+          <TextInput keyboardType='email-address' value={email} placeholder="example@email.com.br" onChangeText={(val:string) => setEmail(val)} />
         </LabelInput>
 
         <LabelInput text="Celular" required={true}>
           <TextInputMask
           type={'custom'}
+          value={celular}
           options={{
             mask: '(99) 99999-9999',
             getRawValue: (val, settings) => cellphone_raw(val, settings)
@@ -79,9 +123,9 @@ export default function Profile_Edit ({navigation}:any) {
           <View style={styles.picker}>
             <Picker selectedValue={genero} onValueChange={(val:string) => {setGenero(val)}} dropdownIconColor={global.colors.lighterGray} style={{color: '#FFF'}}>
               <Picker.Item label="Selecione" value="" />
-              <Picker.Item label="Masculino" value="1" />
-              <Picker.Item label="Feminino" value="2" />
-              <Picker.Item label="Outros" value="3" />
+              <Picker.Item label="Masculino" value={1} />
+              <Picker.Item label="Feminino" value={2} />
+              <Picker.Item label="Outros" value={3} />
             </Picker>
           </View>
         </LabelInput>
@@ -89,6 +133,7 @@ export default function Profile_Edit ({navigation}:any) {
         <LabelInput text="Data de Nascimento" required={true}>
           <TextInputMask
             type={'custom'}
+            value={dataNascimento}
             options={{
               mask: '99/99/9999',
               getRawValue: (val, settings) => date_raw(val, settings)

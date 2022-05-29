@@ -8,7 +8,7 @@ interface Item {
   nome:string
 }
 
-export default function ActionButton ({list, setTags}:any) {
+export default function Tags ({list, setTags}:any) {
   const content:any[] = [];
 
   const [selected, setSelected] = useState<number[]>([]);

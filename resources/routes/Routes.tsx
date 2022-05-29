@@ -30,10 +30,8 @@ export default function Routes() {
     getSession();
   }, [])
 
-  console.log(session);
-
   if(isLoading)
-    return (<Text>CArregando...</Text>);
+    return (<Text>Carregando...</Text>);
     
   return (
     <NavigationContainer theme={{
