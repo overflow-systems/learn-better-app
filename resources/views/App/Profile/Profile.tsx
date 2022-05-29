@@ -1,5 +1,6 @@
 //? UTILS
 import { StyleSheet, Text, View, Image,TouchableOpacity, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { global } from '../../../../globals/global';
 
 import IconFT from 'react-native-vector-icons/Entypo';
@@ -11,6 +12,11 @@ const Pic = require('../../../../assets/images/profile.png');
 import Container from '../../../components/Container';
 
 export default function Profile ({navigation}:any) {
+  const Logout = async () => {
+    await AsyncStorage.removeItem("session");
+    navigation.navigate("Auth", { screen: "Login" })
+  }
+  
   return (
     <Container style={{paddingVertical: 0, paddingHorizontal: 0}}>
       <ScrollView style={{ paddingHorizontal: 20}}>
@@ -66,6 +72,11 @@ export default function Profile ({navigation}:any) {
           <TouchableOpacity style={styles.button}>
             <Icon name="user-alt" color={global.colors.textGray} size={16} style={{marginRight: 10}} />
             <Text style={styles.button_text}>Quero uma conta de Mentor</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={Logout}>
+            <IconFT name="log-out" color={global.colors.textGray} size={16} style={{marginRight: 10}} />
+            <Text style={[styles.button_text]}>Deslogar</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}>
