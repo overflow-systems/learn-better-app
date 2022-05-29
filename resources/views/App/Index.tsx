@@ -223,7 +223,7 @@ export default function Index ({navigation}:any) {
         </View>
       </ScrollView>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("App", { screen: "Mentory" })}}>
         <IconAD name="plus" color="#FFF" size={30} />
       </TouchableOpacity>
     </Container>

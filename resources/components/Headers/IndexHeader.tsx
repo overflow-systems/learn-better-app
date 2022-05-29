@@ -16,7 +16,7 @@ export default function Header ({navigation}:any) {
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.left}>
+      <TouchableOpacity style={styles.left} onPress={() => navigation.navigate("App", { screen: "Profile" })}>
         <Image source={profile} style={styles.pic} />
 
         <Text style={styles.welcome}>Olá Ismael</Text>
