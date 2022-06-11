@@ -1,5 +1,5 @@
 export const api = {
-  baseURL: "http://192.168.15.6:3333",
+  baseURL: "http://192.168.15.12:3333",
   // baseURL: "https://learnbetter-api.herokuapp.com",
 
   request_post: {
@@ -10,5 +10,5 @@ export const api = {
   request_put: {
     method: 'PUT',
     validateStatus: (status:number) => { return status >= 0 && status < 900 }
-  }
+  },
 }

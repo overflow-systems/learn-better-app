@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 
 //? ROUTES
 import Login from '../views/Auth/Login';
+import ChooseAccount from '../views/Auth/Choose_account';
 
 //  FORGOT PASSWORD
 import ForgotPassword from '../views/Auth/ForgotPassword/ForgotPassword';
@@ -36,6 +37,9 @@ export default function Auth ({route}:any) {
   return (
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
+
+      <Stack.Screen name="Choose_account" component={ChooseAccount}
+        options={{...headerConfig, headerTitle: () => (<Header text="Escolher conta" />) }} />
 
       {/* FORGOT PASSWORD */}
       <Stack.Screen name="ForgotPassword" component={ForgotPassword}

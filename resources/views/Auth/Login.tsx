@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'reac
 import { global } from '../../../globals/global';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 //? COMPONENTS
 import Container from '../../components/Container';
@@ -17,15 +17,6 @@ export default function Login ({navigation}:any) {
   const [senha, setSenha] = useState("");
 
   const [loading, setLoading] = useState(false);
-
-  const verifyLogin = async () => {
-    let session = await AsyncStorage.getItem("session");
-
-    console.log(session);
-    
-
-    if(session) navigation.navigate("App", { screen: "Index"});
-  }
 
   const LoginSubmit = () => {
     setLoading(true);
@@ -48,7 +39,14 @@ export default function Login ({navigation}:any) {
 
       //?  SUCESSO
       if(data.status == global._enum.ResponseStatus.SUCCESS) {
-        let session = { id: data.id, token: data.token }
+        let tipo = data.mentor == 1 ? 'mentor' : 'mentorado';
+        let session = { id: data.id, token: data.token, tipo }
+
+        if(data.mentorado == 1 && data.mentor == 1) {
+          navigation.navigate("Auth", { screen: "Choose_account", params: { session }});
+          return;
+        }
+
         await AsyncStorage.setItem("session", JSON.stringify(session))
         navigation.navigate("App", { screen: "Index"});
         return;
