@@ -11,8 +11,29 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 //? COMPONENTS
 import Container from '../../../components/Container';
+import { useEffect, useState } from 'react';
 
-export default function Mentory ({navigation}:any) {
+export default function Mentory ({route, navigation}:any) {
+  const [mentores, setMentores] = useState<any[]>([]);
+  const [mentor, setMentor] = useState<any>(null);
+  const [active, setActive] = useState(0);
+
+  const { session } = route.params;
+
+  const getMentores = async () => {
+    let retorno:any[] = await global.api.methods.buscarMentor(session);
+
+    setMentores(retorno);
+    setMentor(retorno[active]);
+  }
+
+  useEffect(() => {
+    getMentores();
+  }, [])
+
+  useEffect(() => {
+    setMentor(mentores[active]);
+  }, [active])
 
   return (
     <Container style={{ paddingVertical: 0 }}>
@@ -22,15 +43,15 @@ export default function Mentory ({navigation}:any) {
             <Image source={Pic} style={styles.pic} />
           </View>
 
-          <Text style={styles.name}>Ismael Rafael da Silva Sousa</Text>
-          <Text style={styles.tags}>Design, UX/UI, Photoshop, TI, Programação, +30...</Text>
-          <Text style={styles.member}>Membro desde 19/01/2022</Text>
+          <Text style={styles.name}>{mentor?.nome}</Text>
+          <Text style={styles.tags}>{mentor?.tags}</Text>
+          <Text style={styles.member}>Membro desde {mentor?.data_criacao}</Text>
 
-          <Stars avaliation={4.8} />
+          <Stars avaliation={mentor?.nota??0} />
 
           <View style={styles.desc_container}>
             <Text style={styles.desc}>
-              Sou formado no curso de Análise e Desenvolvimento de Sistemas pela Fatec de Praia Grande, já desenvolvi diversos sites e sistemas para clientes de grande e médio porte, além disso, já lecionei um curso de Programação Web para iniciantes durante 5 anos.
+              {mentor?.apresentacao}
             </Text>
           </View>
         </View>
@@ -39,7 +60,7 @@ export default function Mentory ({navigation}:any) {
         {/* TODO: circular progress */}
 
         <View style={styles.bottom}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => { setActive(active > 0 ? active-1 : active) }}>
             <View style={styles.circle}>
               <IconFT name="angle-left" color={global.colors.textGray} size={36} />
             </View>
@@ -53,7 +74,7 @@ export default function Mentory ({navigation}:any) {
             <Text style={styles.button_text}>Ver detalhes</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => { setActive(active < mentores.length - 1 ? active + 1 : active) }}>
             <View style={styles.circle}>
               <IconFT name="angle-right" color={global.colors.textGray} size={36} />
             </View>

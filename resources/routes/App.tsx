@@ -34,32 +34,32 @@ const headerConfig = {
 export default function App ({route, navigation}:any) {
   return (
     <Stack.Navigator initialRouteName="Index">
-      <Stack.Screen name="Index"component={Index} initialParams={{session: route.params.session}}
+      <Stack.Screen name="Index" component={Index} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<IndexHeader navigation={navigation} />) }} />
 
       {/* CHAT */}
-      <Stack.Screen name="Chat_Index" component={Chat_Index}
+      <Stack.Screen name="Chat_Index" component={Chat_Index} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<Header text="Chat" />) }} />
 
-      <Stack.Screen name="Chat" component={Chat}
+      <Stack.Screen name="Chat" component={Chat} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<ChatHeader />) }} />
 
       {/* NOTIFICATIOS */}
-      <Stack.Screen name="Notifications" component={Notifications}
+      <Stack.Screen name="Notifications" component={Notifications} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<Header text="Notificações" />) }} />
 
       {/* PROFILE */}
-      <Stack.Screen name="Profile" component={Profile}
+      <Stack.Screen name="Profile" component={Profile} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<Header text="Meu Perfil" />) }} />
 
-      <Stack.Screen name="Profile_Edit" component={Profile_Edit}
+      <Stack.Screen name="Profile_Edit" component={Profile_Edit} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<Header text="Meu Perfil" />) }} />
 
-      <Stack.Screen name="Profile_Tags" component={Profile_Tags}
+      <Stack.Screen name="Profile_Tags" component={Profile_Tags} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<Header text="Meu Perfil" />) }} />
 
       {/* MENTORY */}
-      <Stack.Screen name="Mentory" component={Mentory}
+      <Stack.Screen name="Mentory" component={Mentory} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<MentoryHeader text="Buscar Mentoria" />) }} />
     </Stack.Navigator>
   );

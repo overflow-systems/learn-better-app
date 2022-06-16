@@ -14,42 +14,23 @@ import Container from '../../../components/Container';
 import { useEffect, useState } from 'react';
 
 
-export default function Profile ({navigation}:any) {
-  const [session, setSession] = useState<any>({});
+export default function Profile ({route, navigation}:any) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>();
 
-  useEffect(() => {
-    async function getSession() { 
-      let ret:string = await AsyncStorage.getItem("session")??"";
-      setSession(JSON.parse(ret));
-    }
+  const { session } = route.params;
 
-    getSession()
-  }, []);
+  const getProfile = async () => {
+    let retorno = await global.api.methods.buscarPerfil(session);
+    setLoading(false);
+    setProfile(retorno);
+    console.log(retorno);
+    
+  }
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: `${global.api.baseURL}/usuario/buscarLogin`,
-      headers: {
-        id: session.id,
-        token: session.token,
-        tipo: session.tipo
-      }
-    })
-    .then(res => {
-      let data = res.data;
-  
-      setLoading(false);
-      setProfile(data);
-    })
-    .catch(res => { 
-      setLoading(false);
-      console.log(res);
-      alert("Ocorreu um erro inesperado");
-    });
-  }, [session])
+    getProfile();
+  }, [])
 
   const Logout = async () => {
     await AsyncStorage.removeItem("session");

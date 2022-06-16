@@ -104,12 +104,20 @@ export default function Index ({route, navigation}:any) {
                       </View>
                     </View>
 
-                    <View style={styles.area_item_bottom}>
-                      <View style={styles.area_item_details}>
-                        <IconFA name="clock-o" size={17} color={global.colors.warning} style={{ marginRight: 5 }} />
-                        <Text style={styles.area_item_details_desc_white}>Aguardando</Text>
-                      </View>
+                    <View style={styles.area_item_content}>
+                      <Text style={styles.area_item_tag}>Design, UX/UI, Photoshop, TI</Text>
 
+                      <View style={styles.area_item_message_row}>
+                        <Icon name="chat" size={34} color={global.colors.textGray} style={{ marginRight: 6 }} />
+
+                        <View>
+                          <Text style={styles.area_item_message_label}>Última mensagem</Text>
+                          <Text style={styles.area_item_message_desc}>Olá Ismael, podemos fazer uma call?</Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={[styles.area_item_bottom, { justifyContent: 'flex-end' }]}>
                       <TouchableOpacity style={styles.area_item_details}>
                         <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
                         <IconFA name="angle-right" size={17} color={global.colors.textGray} />
@@ -119,37 +127,6 @@ export default function Index ({route, navigation}:any) {
                 )
               })
             }
-
-            <View style={styles.area_item}>
-              <View style={styles.area_item_top}>
-                <Image style={styles.area_item_pic} source={profile} />
-
-                <View>
-                  <Text style={styles.area_item_name}>Afonso Chaves</Text>
-                  <Text style={styles.area_item_date}>19/01/2022</Text>
-                </View>
-              </View>
-
-              <View style={styles.area_item_content}>
-                <Text style={styles.area_item_tag}>Design, UX/UI, Photoshop, TI</Text>
-
-                <View style={styles.area_item_message_row}>
-                  <Icon name="chat" size={34} color={global.colors.textGray} style={{ marginRight: 6 }} />
-
-                  <View>
-                    <Text style={styles.area_item_message_label}>Última mensagem</Text>
-                    <Text style={styles.area_item_message_desc}>Olá Ismael, podemos fazer uma call?</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={[styles.area_item_bottom, { justifyContent: 'flex-end' }]}>
-                <TouchableOpacity style={styles.area_item_details}>
-                  <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
-                  <IconFA name="angle-right" size={17} color={global.colors.textGray} />
-                </TouchableOpacity>
-              </View>
-            </View>
           </ScrollView>
         </View>
 
@@ -298,7 +275,7 @@ const styles = StyleSheet.create({
 
   area_item_top: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   area_item_pic: {
@@ -320,7 +297,7 @@ const styles = StyleSheet.create({
   },
 
   area_item_content: {
-    marginTop: 10
+    marginTop: 10,
   },
   
   area_item_tag: {
@@ -331,7 +308,8 @@ const styles = StyleSheet.create({
 
   area_item_message_row: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 'auto'
   },
 
   area_item_message_label: {
@@ -368,7 +346,7 @@ const styles = StyleSheet.create({
   area_item_bottom: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 15
+    marginTop: 10,
   },
 
   button: {

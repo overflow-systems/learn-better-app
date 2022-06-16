@@ -82,7 +82,6 @@ export const api = {
         andamento: [],
         finalizadas: []
       }
-      
 
       //  ANDAMENTO
       await axios
@@ -110,7 +109,7 @@ export const api = {
             tipo: session.tipo
           }
         }).then(res => {
-          retorno.finalizadas = res.data;
+          retorno.aguardando = res.data;
           
         }).catch(res => {
           console.log(res)
@@ -130,6 +129,51 @@ export const api = {
         }).catch(res => {
           console.log(res)
         })
+
+      return retorno;
+    },
+
+    buscarMentor: async (session:Session) => {
+      let retorno:any[] = [];
+
+      //  ANDAMENTO
+      await axios
+        .get(`${api.baseURL}/mentoria/mentores`, {
+          params: { status: 1 },
+          headers: {
+            id: session.id,
+            token: session.token,
+            tipo: session.tipo
+          }
+        }).then(res => {
+          retorno = res.data;
+          
+        }).catch(res => {
+          console.log(res)
+        })
+
+        return retorno;
+    },
+
+    buscarPerfil: async (session:Session) => {
+      let retorno;
+
+      await axios({
+        method: "GET",
+        url: `${api.baseURL}/usuario/buscarLogin`,
+        headers: {
+          id: session.id,
+          token: session.token,
+          tipo: session.tipo
+        }
+      })
+      .then(res => {
+        retorno = res.data;
+      })
+      .catch(res => { 
+        console.log(res);
+        alert("Ocorreu um erro inesperado");
+      });
 
       return retorno;
     }
