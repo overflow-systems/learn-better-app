@@ -23,7 +23,9 @@ export default function Routes() {
   useEffect(() => {
     async function getSession() {
       let async_session = await AsyncStorage.getItem("session");
-      setSession(async_session);
+      let session = async_session != null ? JSON.parse(async_session) : null;
+      
+      setSession(session);
       setIsLoading(false);
     }
 
@@ -32,7 +34,7 @@ export default function Routes() {
 
   if(isLoading)
     return (<Text>Carregando...</Text>);
-    
+
   return (
     <NavigationContainer theme={{
       dark: true,
@@ -47,7 +49,7 @@ export default function Routes() {
       }}>
       <Stack.Navigator initialRouteName={session? "App" : "Auth"}>
         <Stack.Screen name="Auth" component={Auth} options={{headerShown: false}} />
-        <Stack.Screen name="App" component={App} options={{headerShown: false}} />
+        <Stack.Screen name="App" initialParams={{session}} component={App} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

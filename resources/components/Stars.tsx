@@ -15,7 +15,7 @@ export default function Stars({avaliation}:any) {
       if(avaliation < 1) {
         stars[i] = .5;
         result.push(
-          <View style={style.star_container}>
+          <View style={style.star_container} key={i}>
             <Icon name="star" key={i} color={global.colors.lighterGray} size={30} />
             <Icon name="star-half" style={style.star_half} key={i+.5} color={global.colors.success} size={30} />
           </View>
@@ -24,7 +24,7 @@ export default function Stars({avaliation}:any) {
       }
       else {
         result.push(
-          <View style={style.star_container}>
+          <View style={style.star_container} key={i}>
             <Icon name="star" key={i} color={global.colors.success} size={30} />
           </View>
         );
@@ -34,7 +34,7 @@ export default function Stars({avaliation}:any) {
     }
     else
       result.push(
-        <View style={style.star_container}>
+        <View style={style.star_container} key={i}>
           <Icon name="star" key={i} color={global.colors.lighterGray} size={30} />
         </View>
       );

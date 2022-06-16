@@ -31,10 +31,10 @@ const headerConfig = {
   headerShadowVisible: false,
 }
 
-export default function App ({navigation}:any) {
+export default function App ({route, navigation}:any) {
   return (
     <Stack.Navigator initialRouteName="Index">
-      <Stack.Screen name="Index" component={Index}
+      <Stack.Screen name="Index"component={Index} initialParams={{session: route.params.session}}
         options={{...headerConfig, headerTitle: () => (<IndexHeader navigation={navigation} />) }} />
 
       {/* CHAT */}

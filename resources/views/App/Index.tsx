@@ -15,137 +15,71 @@ import IconFA from 'react-native-vector-icons/FontAwesome';
 import IconFT from 'react-native-vector-icons/Entypo';
 import IconAD from 'react-native-vector-icons/AntDesign';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
-export default function Index ({navigation}:any) {
-  const [andamentoLoading, setAndamentoLoading] = useState(true);
-  const [finalizadasLoading, setFinalizadasLoading] = useState(true);
-  const [aguardandoLoading, setAguardandoLoading] = useState(true);
-
-  const [qtdAndamento, setQtdAndamento] = useState(0);
-  const [qtdFinalizadas, setQtdFinalizadas] = useState(0);
-  const [qtdAguardando, setQtdAguardando] = useState(0);
+export default function Index ({route, navigation}:any) {
+  const [qtdAndamento, setQtdAndamento] = useState<number|null>(null);
+  const [qtdFinalizadas, setQtdFinalizadas] = useState<number|null>(null);
+  const [qtdAguardando, setQtdAguardando] = useState<number|null>(null);
 
   const [andamento, setAndamento] = useState([]);
   const [finalizadas, setFinalizadas] = useState([]);
   const [aguardando, setAguardando] = useState([]);
 
-  const [session, setSession] = useState<any>({});
+  const { session } = route.params;
+
+  const getValues = async () => {
+    let { qtAndamento, qtAguardando, qtFinalizadas } = await global.api.methods.mentoriaQuantidade(session);
+
+    setQtdAndamento(qtAndamento);
+    setQtdAguardando(qtAguardando);
+    setQtdFinalizadas(qtFinalizadas);
+
+    let { andamento, aguardando, finalizadas } = await global.api.methods.mentoriaPerfil(session);
+    
+    setAndamento(andamento);
+    setAguardando(aguardando);
+    setFinalizadas(finalizadas);
+  }
 
   useEffect(() => {
-    async function getSession() { 
-      let ret:string = await AsyncStorage.getItem("session")??"";
-      setSession(JSON.parse(ret));
-    }
-
-    getSession();
+    getValues();
   }, [])
-
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: `${global.api.baseURL}/mentoria/quantidade`,
-      params: { status: 1 },
-      headers: {
-        id: session.id,
-        token: session.token,
-        tipo: session.tipo
-      }
-    }).then(res => {
-      let data = res.data;
-
-      setQtdAndamento(data)
-    }).catch(res => {
-      console.log(res)
-    }).finally(() => {
-      setAndamentoLoading(false)
-    })
-
-    axios({
-      method: "GET",
-      url: `${global.api.baseURL}/mentoria/quantidade`,
-      params: { status: 3 },
-      headers: {
-        id: session.id,
-        token: session.token,
-        tipo: session.tipo
-      }
-    }).then(res => {
-      let data = res.data;
-
-      setQtdFinalizadas(data)
-    }).catch(res => {
-      console.log(res)
-    }).finally(() => {
-      setFinalizadasLoading(false)
-    })
-
-    axios({
-      method: "GET",
-      url: `${global.api.baseURL}/mentoria/quantidade`,
-      params: { status: 2 },
-      headers: {
-        id: session.id,
-        token: session.token,
-        tipo: session.tipo
-      }
-    }).then(res => {
-      let data = res.data;
-
-      setQtdAguardando(data)
-    }).catch(res => {
-      console.log(res)
-    }).finally(() => {
-      setAguardandoLoading(false)
-    })
-  }, [session])
-
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: `${global.api.baseURL}/mentoria/buscar/usuario`,
-      params: { status: 3 },
-      headers: {
-        id: session.id,
-        token: session.token,
-        tipo: session.tipo
-      }
-    })
-    .then(res => {
-      let data = res.data;
-
-      console.log(data);
-      
-
-      setFinalizadas(data);
-    })
-    .catch(res => {
-      console.log(res)
-    })
-    .finally(() => {
-      
-      
-    })
-
-  }, [session])
 
   return (
     <Container style={{paddingHorizontal: 0, padding: 0}}>
       <ScrollView style={{ paddingHorizontal: 10 }}>
         <View style={styles.filter_row}>
           <TouchableOpacity style={styles.filter}>
-            <Text style={styles.filter_number}>{andamentoLoading? <ActivityIndicator size="large" color={global.colors.textGray} /> : qtdAndamento}</Text>
+            <Text style={styles.filter_number}>
+              {
+                qtdAndamento == null ?
+                  <ActivityIndicator size="large" color={global.colors.textGray} />
+                : qtdAndamento
+              }
+              </Text>
             <Text style={styles.filter_desc}>Em andamento</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.filter}>
-            <Text style={styles.filter_number}>{finalizadasLoading? <ActivityIndicator size="large" color={global.colors.textGray} /> : qtdFinalizadas}</Text>
-            <Text style={styles.filter_desc}>Finalizadas</Text>
+            <Text style={styles.filter_number}>
+              {
+                qtdAguardando == null ?
+                  <ActivityIndicator size="large" color={global.colors.textGray} />
+                : qtdAguardando
+              }
+            </Text>
+            <Text style={styles.filter_desc}>Aguardando</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.filter}>
-            <Text style={styles.filter_number}>{aguardandoLoading? <ActivityIndicator size="large" color={global.colors.textGray} /> : qtdAguardando}</Text>
-            <Text style={styles.filter_desc}>Aguardando</Text>
+            <Text style={styles.filter_number}>
+              {
+                qtdFinalizadas == null ?
+                  <ActivityIndicator size="large" color={global.colors.textGray} />
+                : qtdFinalizadas
+              }
+            </Text>
+            <Text style={styles.filter_desc}>Finalizadas</Text>
           </TouchableOpacity>
         </View>
 
@@ -154,36 +88,37 @@ export default function Index ({navigation}:any) {
           <Text style={styles.area_title}>Mentorias <Text style={styles.area_subtitle}>(em andamento)</Text></Text>
 
           <ScrollView horizontal={true}>
-            <View style={styles.area_item}>
-              <View style={styles.area_item_top}>
-                <Image style={styles.area_item_pic} source={profile} />
+            {
+              andamento.map((item:any, index) => {
+                let data_inicio = new Date(item.data_inicio).toLocaleDateString();
+                let data_fim = new Date(item.data_fim).toLocaleDateString();
 
-                <View>
-                  <Text style={styles.area_item_name}>Afonso Chaves</Text>
-                  <Text style={styles.area_item_date}>19/01/2022</Text>
-                </View>
-              </View>
+                return(
+                  <View key={index} style={styles.area_item}>
+                    <View style={styles.area_item_top}>
+                      <Image style={styles.area_item_pic} source={profile} />
 
-              <View style={styles.area_item_content}>
-                <Text style={styles.area_item_tag}>Design, UX/UI, Photoshop, TI</Text>
+                      <View>
+                        <Text style={styles.area_item_name}>{item.nome}</Text>
+                        <Text style={styles.area_item_date}>{data_inicio.toString()} - <IconFT name="flag" size={20} color={global.colors.green} /> {data_fim}</Text>
+                      </View>
+                    </View>
 
-                <View style={styles.area_item_message_row}>
-                  <Icon name="chat" size={34} color={global.colors.textGray} style={{ marginRight: 6 }} />
+                    <View style={styles.area_item_bottom}>
+                      <View style={styles.area_item_details}>
+                        <IconFA name="clock-o" size={17} color={global.colors.warning} style={{ marginRight: 5 }} />
+                        <Text style={styles.area_item_details_desc_white}>Aguardando</Text>
+                      </View>
 
-                  <View>
-                    <Text style={styles.area_item_message_label}>Última mensagem</Text>
-                    <Text style={styles.area_item_message_desc}>Olá Ismael, podemos fazer uma call?</Text>
+                      <TouchableOpacity style={styles.area_item_details}>
+                        <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
+                        <IconFA name="angle-right" size={17} color={global.colors.textGray} />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              </View>
-
-              <View style={[styles.area_item_bottom, { justifyContent: 'flex-end' }]}>
-                <TouchableOpacity style={styles.area_item_details}>
-                  <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
-                  <IconFA name="angle-right" size={17} color={global.colors.textGray} />
-                </TouchableOpacity>
-              </View>
-            </View>
+                )
+              })
+            }
 
             <View style={styles.area_item}>
               <View style={styles.area_item_top}>
@@ -223,51 +158,37 @@ export default function Index ({navigation}:any) {
           <Text style={styles.area_title}>Mentorias <Text style={styles.area_subtitle}>(aguardando)</Text></Text>
 
           <ScrollView horizontal={true}>
-            <View style={styles.area_item}>
-              <View style={styles.area_item_top}>
-                <Image style={styles.area_item_pic} source={profile} />
+            {
+              aguardando.map((item:any, index) => {
+                let data_inicio = new Date(item.data_inicio).toLocaleDateString();
+                let data_fim = new Date(item.data_fim).toLocaleDateString();
 
-                <View>
-                  <Text style={styles.area_item_name}>Afonso Chaves</Text>
-                  <Text style={styles.area_item_date}>19/01/2022</Text>
-                </View>
-              </View>
+                return(
+                  <View key={index} style={styles.area_item}>
+                    <View style={styles.area_item_top}>
+                      <Image style={styles.area_item_pic} source={profile} />
 
-              <View style={styles.area_item_bottom}>
-                <TouchableOpacity style={styles.area_item_details}>
-                  <IconFA name="clock-o" size={17} color={global.colors.warning} style={{ marginRight: 5 }} />
-                  <Text style={styles.area_item_details_desc_white}>Aguardando</Text>
-                </TouchableOpacity>
+                      <View>
+                        <Text style={styles.area_item_name}>{item.nome}</Text>
+                        <Text style={styles.area_item_date}>{data_inicio.toString()} - <IconFT name="flag" size={20} color={global.colors.green} /> {data_fim}</Text>
+                      </View>
+                    </View>
 
-                <TouchableOpacity style={styles.area_item_details}>
-                  <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
-                  <IconFA name="angle-right" size={17} color={global.colors.textGray} />
-                </TouchableOpacity>
-              </View>
-            </View>
+                    <View style={styles.area_item_bottom}>
+                      <View style={styles.area_item_details}>
+                        <IconFA name="clock-o" size={17} color={global.colors.warning} style={{ marginRight: 5 }} />
+                        <Text style={styles.area_item_details_desc_white}>Aguardando</Text>
+                      </View>
 
-            <View style={styles.area_item}>
-              <View style={styles.area_item_top}>
-                <Image style={styles.area_item_pic} source={profile} />
-
-                <View>
-                  <Text style={styles.area_item_name}>Afonso Chaves</Text>
-                  <Text style={styles.area_item_date}>19/01/2022</Text>
-                </View>
-              </View>
-
-              <View style={styles.area_item_bottom}>
-                <TouchableOpacity style={styles.area_item_details}>
-                  <IconFT name="block" size={17} color={global.colors.danger} style={{ marginRight: 5 }} />
-                  <Text style={styles.area_item_details_desc_white}>Recusada</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.area_item_details}>
-                  <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
-                  <IconFA name="angle-right" size={17} color={global.colors.textGray} />
-                </TouchableOpacity>
-              </View>
-            </View>
+                      <TouchableOpacity style={styles.area_item_details}>
+                        <Text style={styles.area_item_details_desc}>Ver detalhes</Text>
+                        <IconFA name="angle-right" size={17} color={global.colors.textGray} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              })
+            }
           </ScrollView>
         </View>
 
@@ -277,7 +198,7 @@ export default function Index ({navigation}:any) {
 
           <ScrollView horizontal={true}>
             {
-              finalizadas.map((item, index) => {
+              finalizadas.map((item:any, index) => {
                 let data_inicio = new Date(item.data_inicio).toLocaleDateString();
                 let data_fim = new Date(item.data_fim).toLocaleDateString();
 
@@ -322,6 +243,7 @@ const styles = StyleSheet.create({
   filter_row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 20
   },
 
@@ -332,7 +254,8 @@ const styles = StyleSheet.create({
     maxWidth: '32%',
     width: '100%',
     borderRadius: 6,
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 95
   },
 
   filter_number: {
