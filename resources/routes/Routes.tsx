@@ -2,7 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { DeviceEventEmitter, Text } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,6 +19,10 @@ export default function Routes() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [session, setSession] = useState<any>(null);
+
+  DeviceEventEmitter.addListener("event.setSession", (event) => {
+    setSession(event);
+  })
 
   useEffect(() => {
     async function getSession() {

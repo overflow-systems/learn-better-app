@@ -1,5 +1,5 @@
 //? UTILS
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { DeviceEventEmitter, StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { global } from '../../../globals/global';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -47,7 +47,9 @@ export default function Login ({navigation}:any) {
           return;
         }
 
+        DeviceEventEmitter.emit('event.setSession', session);
         await AsyncStorage.setItem("session", JSON.stringify(session))
+        
         navigation.navigate("App", { screen: "Index"});
         return;
       }
